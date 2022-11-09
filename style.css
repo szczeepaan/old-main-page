@@ -15,7 +15,6 @@ html, body {
     padding: 0;
     height: 100%;
     width: 100%;
-    overflow: hidden;
 
     background-color: var(--bg);
     color: var(--font);
@@ -54,7 +53,7 @@ input {
 }
 
 #tfcont {
-    position: absolute;
+    position: fixed;
     display: flex;
     width: 100%;
     height: 100%;
