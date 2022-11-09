@@ -50,7 +50,7 @@ input {
     resize: none;
     font-size: inherit;
     font-family: inherit;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 #tfcont {

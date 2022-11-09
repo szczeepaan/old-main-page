@@ -76,7 +76,6 @@ const commandList = [
     'view',
     'color',
     'bgcolor',
-    'close',
     'tf'
 ];
 const commandHelp = {
@@ -85,7 +84,6 @@ const commandHelp = {
     view: 'view - Opens a project in another tab.<br>Arguments:<br>&nbsp;&nbsp;project_name - Name of project to open (required). Not case sensitive.',
     color: "color - Changes the font color.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (required)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or other HTML colors)",
     bgcolor: "bgcolor - Changes the background color.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (required)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or other HTML colors)",
-    close: 'close - Closes the tab.',
     tf: '???'
 }
 const commandDesc = {
@@ -94,7 +92,6 @@ const commandDesc = {
     view: " - opens a specified project. (see 'list' for project names)",
     color: " - changes the font color. (see 'help color' for details)",
     bgcolor: " - changes the background color. (see 'help bgcolor' for details)",
-    close: ' - closes the tab',
     tf: ' - ???'
 };
 
