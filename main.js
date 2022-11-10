@@ -47,10 +47,12 @@ function view(p) {
 function color(c) {
     container.innerHTML += '>> ' + input + '<br>';
     if (c == '') {
-        root.style.setProperty('--font', c);
+        root.style.setProperty('--font', '#FFF');
+        localStorage.setItem('font-color', '#FFF');
         container.innerHTML += `<br>Font color reset<br><br>`;
     }
-    else if (CSS.supports('color', '#FFF')) {
+    else if (CSS.supports('color', c)) {
+        localStorage.setItem('font-color', c);
         root.style.setProperty('--font', c);
         container.innerHTML += `<br>Font color set to ${c}<br><br>`;
     }
@@ -63,9 +65,11 @@ function bgcolor(c) {
     container.innerHTML += '>> ' + input + '<br>';
     if (c == '') {
         root.style.setProperty('--bg', '#0C0C0C');
+        localStorage.setItem('background-color', '#0C0C0C');
         container.innerHTML += `<br>Background color reset<br><br>`;
     }
     else if (CSS.supports('color', c)) {
+        localStorage.setItem('background-color', c);
         root.style.setProperty('--bg', c);
         container.innerHTML += `<br>Background color set to ${c}<br><br>`;
     }
@@ -82,6 +86,7 @@ function tf() {
     container.innerHTML += '>> ' + input + '<br>';
     container.innerHTML += '<br>trolled<br><br>';
 }
+
 
 
 
@@ -104,8 +109,8 @@ const commandHelp = {
     help: 'help - Displays the command list<br>Arguments:<br>&nbsp;&nbsp;command_name - Displays info about a command (optional). Not case sensitive.',
     list: 'list - Displays a list of projects.',
     view: 'view - Opens a project in another tab.<br>Arguments:<br>&nbsp;&nbsp;project_name - Name of project to open (required). Not case sensitive.',
-    color: "color - Changes the font color.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (optional)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank'>other CSS colors</a>)<br>&nbsp;&nbsp;Providing no arguments resets to default.",
-    bgcolor: "bgcolor - Changes the background color.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (optional)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank'>other CSS colors</a>)<br>&nbsp;&nbsp;Providing no arguments resets to default.",
+    color: "color - Changes the font color. Changes will be saved.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (optional)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank'>other CSS colors</a>)<br>&nbsp;&nbsp;Providing no arguments resets to default.",
+    bgcolor: "bgcolor - Changes the background color. Changes will be saved.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (optional)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank'>other CSS colors</a>)<br>&nbsp;&nbsp;Providing no arguments resets to default.",
     tf: '???'
 }
 const commandDesc = {
@@ -131,12 +136,14 @@ const tfAnimation = trollface.animate(
         iterations: 1
     }
 );
-const version = '1.1';
+const version = '1.1.1';
 const root = document.querySelector(':root');
 const container = document.querySelector('.container');
 const currentLine = document.querySelector('#current-line');
 let input = '';
 let check = '';
+if (localStorage.getItem('background-color')) root.style.setProperty('--bg', localStorage.getItem('background-color'));
+if (localStorage.getItem('font-color')) root.style.setProperty('--font', localStorage.getItem('font-color'));
 
 document.title = `szczepan ${version}`;
 container.innerHTML = `<div>szczepan [${version}]. Type 'help' for list of commands.</div>`;
