@@ -41,22 +41,43 @@ function view(p) {
         return;
     }
     container.innerHTML += `<br>Opened '${p}' in new tab.<br><br>`;
-    window.open(projectLinks[p], '_blank').focus();
+    window.open(projectLinks[p.replace(' ', '_')], '_blank').focus();
 }
 
 function color(c) {
-    root.style.setProperty('--font', c);
     container.innerHTML += '>> ' + input + '<br>';
-    container.innerHTML += `<br>Font color set to ${c}<br><br>`;
+    if (c == '') {
+        root.style.setProperty('--font', c);
+        container.innerHTML += `<br>Font color reset<br><br>`;
+    }
+    else if (CSS.supports('color', '#FFF')) {
+        root.style.setProperty('--font', c);
+        container.innerHTML += `<br>Font color set to ${c}<br><br>`;
+    }
+    else {
+        container.innerHTML += `<br>Invalid color '${c}'. Please only use <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank'>valid CSS color names/codes.</a><br><br>`;
+    }
 }
 
 function bgcolor(c) {
-    root.style.setProperty('--bg', c);
     container.innerHTML += '>> ' + input + '<br>';
-    container.innerHTML += `<br>Background color set to ${c}<br><br>`;
+    if (c == '') {
+        root.style.setProperty('--bg', '#0C0C0C');
+        container.innerHTML += `<br>Background color reset<br><br>`;
+    }
+    else if (CSS.supports('color', c)) {
+        root.style.setProperty('--bg', c);
+        container.innerHTML += `<br>Background color set to ${c}<br><br>`;
+    }
+    else {
+        container.innerHTML += `<br>Invalid color '${c}'. Please only use <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank'>valid CSS color names/codes.</a><br><br>`;
+    }
 }
 
+tfDisplay = () => { tfcontainer.style.setProperty('display', 'none') }
 function tf() {
+    tfcontainer.style.setProperty('display', 'flex');
+    setTimeout(tfDisplay, tfDuration);
     tfAnimation.play();
     container.innerHTML += '>> ' + input + '<br>';
     container.innerHTML += '<br>trolled<br><br>';
@@ -64,8 +85,9 @@ function tf() {
 
 
 
+
 const projectList = [
-    'wordle_clone'
+    'wordle clone'
 ];
 const projectLinks = {
     wordle_clone: 'https://szczeepaan.github.io/wordle-clone'
@@ -82,8 +104,8 @@ const commandHelp = {
     help: 'help - Displays the command list<br>Arguments:<br>&nbsp;&nbsp;command_name - Displays info about a command (optional). Not case sensitive.',
     list: 'list - Displays a list of projects.',
     view: 'view - Opens a project in another tab.<br>Arguments:<br>&nbsp;&nbsp;project_name - Name of project to open (required). Not case sensitive.',
-    color: "color - Changes the font color.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (required)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or other HTML colors)",
-    bgcolor: "bgcolor - Changes the background color.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (required)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or other HTML colors)",
+    color: "color - Changes the font color.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (optional)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank'>other CSS colors</a>)<br>&nbsp;&nbsp;Providing no arguments resets to default.",
+    bgcolor: "bgcolor - Changes the background color.<br>Arguments:<br>&nbsp;&nbsp;color - Color name or HEX value (optional)<br>&nbsp;&nbsp;Available colors: black, blue, green, cyan, red, purple, yellow, white, gray (or <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank'>other CSS colors</a>)<br>&nbsp;&nbsp;Providing no arguments resets to default.",
     tf: '???'
 }
 const commandDesc = {
@@ -97,26 +119,27 @@ const commandDesc = {
 
 const trollface = document.querySelector('#tf');
 const tfcontainer = document.querySelector('#tfcont');
+const tfDuration = 1500;
 const tfAnimation = trollface.animate(
     [
-        { transform: 'rotate(0) scale(0.1)', opacity: 1 },
-        { opacity: 1 },
-        { opacity: 1 },
-        { opacity: 1 },
-        { opacity: 1 },
-        { transform: 'rotate(720deg) scale(1)', opacity: 0}
+        { transform: 'scale(0.01)', opacity: 0, },
+        { transform: ' scale(5)', opacity: 1},
+        { transform: ' scale(5)', opacity: 0},
     ],
     {
-        duration: 800,
+        duration: tfDuration,
         iterations: 1
     }
 );
-
+const version = '1.1';
 const root = document.querySelector(':root');
 const container = document.querySelector('.container');
 const currentLine = document.querySelector('#current-line');
 let input = '';
 let check = '';
+
+document.title = `szczepan ${version}`;
+container.innerHTML = `<div>szczepan [${version}]. Type 'help' for list of commands.</div>`;
 
 window.addEventListener('keydown', (e) => {
     let key = e.key;
@@ -129,7 +152,7 @@ window.addEventListener('keydown', (e) => {
             check = input.replace('(', '').replace(')', '');
         }
         check = check.toLowerCase();
-        if (eval('window.' + check)) {
+        if (commandList.includes(check)) {
             eval(`${check}("${input.slice(check.length + 1, input.length)}")`);
         } else {
             invalidCommand();
