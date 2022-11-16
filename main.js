@@ -92,10 +92,12 @@ function tf() {
 
 
 const projectList = [
-    'wordle clone'
+    'wordle clone',
+    'cps test'
 ];
 const projectLinks = {
-    wordle_clone: 'https://szczeepaan.github.io/wordle-clone'
+    wordle_clone: 'https://szczeepaan.github.io/wordle-clone',
+    cps_test: 'https://szczeepaan.github.io/cps-test'
 }
 const commandList = [
     'help',
